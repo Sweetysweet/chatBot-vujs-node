@@ -1,11 +1,11 @@
 <template>
   <div id="app">
     <div class="header">
-      <h1>Chatroom</h1>
-      <p class="username">Username: {{ username }}</p>
+      <h1>Комната чата активна</h1>
+      <p class="username">Пользователь: {{ username }}</p>
       <p class="online">Online: {{ users.length }}</p>
     </div>
-    <ChatRoom :messages="messages" @sendMessage="this.sendMessage" />
+    <ChatRoom :messages="messages" :mode="mode" @sendMessage="this.sendMessage" />
   </div>
 </template>
 
@@ -17,6 +17,11 @@ export default {
   name: "app",
   components: {
     ChatRoom,
+  },
+  props: {
+    mode: {
+      type: String
+    }
   },
   data: () => ({
     username: "",
@@ -47,16 +52,16 @@ export default {
     },
     sendMessage(message) {
       this.socket.emit("msg", message);
-    }
+    },
   },
   mounted() {
-    this.username = prompt("What is your username?", "Anonymous");
+    this.username = prompt("Как ваше имя?", "Аноним");
 
     if (!this.username) {
-      this.username = "Anonymous";
+      this.username = "Аноним";
     }
 
     this.joinServer();
-  }
-}
+  },
+};
 </script>
